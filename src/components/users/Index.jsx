@@ -1,59 +1,61 @@
 import React, { Component } from "react";
-import CharacterCard from "./components/characterCard/CharacterCard";
-import CircularProgress from "@material-ui/core/CircularProgress";
-
-
+import { connect } from "react-redux";
+import * as usersActions from "../../actions/usersActions";
+import Loader from "../utilities/Loader";
 class Users extends Component {
+  state = {
+    users: []
+  };
 
-    state = {
-        data: {
-            results: [],
-        },
-        page: 1,
-        error: null,
-        loading: true,
-    };
+  componentDidMount() {
+    this.props.getUsers();
+  }
+  insertContent = () => (
+    <table className="table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Enlace</th>
+        </tr>
+      </thead>
+      <tbody>{this.insertRows()}</tbody>
+    </table>
+  );
+  insertRows = () => {
+    return this.props.users.map(user => (
+      <tr key={user.id}>
+        <td>{user.name}</td>
+        <td>{user.email}</td>
+        <td>{user.website}</td>
+      </tr>
+    ));
+  };
 
-    componentDidMount() {
-        this.fetchCharacters();
-    }
-
-    fetchCharacters = async () => {
-        this.setState({ loading: true, error: null });
-        try {
-            const response = await fetch(`https://rickandmortyapi.com/api/character?page=${this.state.page}`);
-            const data = await response.json();
-            this.setState({ loading: false, data: { info: data.info, results: [].concat(this.state.data.results, data.results) }, page: this.state.page + 1 });
-
-        } catch (error) {
-            this.setState({ error: true, loading: false });
-
-        }
-    };
-
-    render() {
-        if (this.state.error) {
-            return `Error ${this.state.error.message}`;
-        }
-        return (
-            <div className="container">
-                <div className="cards-container">
-                    {this.state.data.results.map(character => (
-                        <CharacterCard key={character.id} character={character} />
-                    ))}
-                </div>
-                {this.state.loading && (
-                    <div className="loader-container">
-                        <CircularProgress color={"secondary"} size={100} />
-                    </div>
-                )}
-
-                {!this.state.loading && (
-                    <div className="btn-container"><button className="btn-custom" onClick={() => this.fetchCharacters()}>Load more</button></div>
-                )}
-            </div>
-        );
-    }
+  render() {
+    console.log(this.props);
+    return (
+      <div>
+        {this.props.loading ? (
+          <div className="centered-container">
+            <Loader color={"#02cffd"} />
+          </div>
+        ) : (
+          this.insertContent()
+        )}
+      </div>
+    );
+  }
 }
 
-export default Users;
+const mapStateToProps = reducers => {
+  //  recibe todos los reducers en "reducers"
+  return reducers.usersReducer; // conectar al component con un reducer en especifico.
+};
+
+const mapDispatchToProps = () => {};
+
+export default connect(
+  mapStateToProps,
+  usersActions
+)(Users);

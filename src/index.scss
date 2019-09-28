@@ -1,11 +1,32 @@
-.margin{
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.margin {
   margin: 100px;
 }
-.table{
+.table {
   text-align: left;
   width: 100%;
   td {
     padding-top: 10px;
     padding-bottom: 10px;
   }
+}
+
+#menu {
+  background-color: #253a46;
+  padding: 20px;
+  font-size: 20px;
+  a {
+    color: white;
+    padding-right: 50px;
+  }
+}
+.centered-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }

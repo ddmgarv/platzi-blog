@@ -14,7 +14,7 @@ export const getUsers = () => async dispatch => {
   } catch (error) {
     dispatch({
       type: ERROR,
-      payload: error.message
+      payload: `${error.message}, Algo salió mal. Por favor, intente mas tarde.`
     });
   }
 };

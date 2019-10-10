@@ -19,7 +19,6 @@ const UsersTable = ({ users }) => {
     ));
   return (
     <div>
-      {console.log(users)}
       <table className="table">
         <thead>
           <tr>

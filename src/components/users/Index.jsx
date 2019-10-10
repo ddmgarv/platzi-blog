@@ -7,7 +7,9 @@ import UsersTable from "./UsersTable";
 
 class Users extends Component {
   componentDidMount() {
-    this.props.getUsers();
+    if (!this.props.users.length) {
+      this.props.getUsers();
+    }
   }
 
   insertContent = () => {
@@ -26,7 +28,6 @@ class Users extends Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <div>
         <h2>Usuarios</h2>

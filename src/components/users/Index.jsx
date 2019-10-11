@@ -42,8 +42,6 @@ const mapStateToProps = reducers => {
   return reducers.usersReducer; // conectar al component con un reducer en especifico.
 };
 
-const mapDispatchToProps = () => {};
-
 export default connect(
   mapStateToProps,
   usersActions

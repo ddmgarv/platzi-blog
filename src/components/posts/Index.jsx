@@ -10,6 +10,7 @@ import {
 import Loader from "../utilities/Loader";
 import Fatal from "../utilities/Fatal";
 import Comments from "./Comments";
+
 class Posts extends Component {
   async componentDidMount() {
     const {
@@ -73,24 +74,23 @@ class Posts extends Component {
       <div
         className="post-title"
         key={post.id}
-        onClick={() =>
-          this.props.showComments(posts_key, com_key, post.comments)
-        }
+        onClick={() => this.insertComments(posts_key, com_key, post.comments)}
       >
         <h2>{post.title}</h2>
         <h3>{post.body}</h3>
-        {post.open ? <Comments /> : "Cerrado"}
+        {post.open ? <Comments comments={post.comments} /> : "Cerrado"}
       </div>
     ));
   };
   insertComments = (posts_key, com_key, comments) => {
-    console.log(comments);
     this.props.showComments(posts_key, com_key);
-    this.props.getComments(posts_key, com_key);
+    if (comments && comments) {
+      this.props.getComments(posts_key, com_key, comments);
+    }
   };
   render() {
     return (
-      <div>
+      <div className="posts">
         {this.insertUser()}
         {this.insertPosts()}
       </div>

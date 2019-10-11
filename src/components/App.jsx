@@ -3,15 +3,14 @@ import { BrowserRouter, Route } from "react-router-dom";
 import Menu from "./menu";
 import Users from "./users";
 import Posts from "./posts";
-
-const homework = () => <div>Tareas</div>;
+import Tasks from "./tasks";
 
 const App = () => (
   <BrowserRouter>
     <Menu />
     <div className="margin">
       <Route exact path="/" component={Users} />
-      <Route exact path="/tareas" component={homework} />
+      <Route exact path="/tareas" component={Tasks} />
       <Route exact path="/publicaciones/:key" component={Posts} />
     </div>
   </BrowserRouter>

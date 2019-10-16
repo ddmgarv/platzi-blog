@@ -18,7 +18,7 @@ export const getPosts = () => async dispatch => {
     type: LOADING
   });
   try {
-    const data = await fetch("http://jsonplaceholder.typicode.com/posts").then(
+    const data = await fetch("https://jsonplaceholder.typicode.com/posts").then(
       data => data.json()
     );
     dispatch({
@@ -41,7 +41,7 @@ export const getPostsById = key => async (dispatch, getState) => {
     const { posts } = getState().postsReducer;
     const user_id = users[key].id;
     const data = await fetch(
-      `http://jsonplaceholder.typicode.com/posts?userId=${user_id}`
+      `https://jsonplaceholder.typicode.com/posts?userId=${user_id}`
     ).then(data => data.json());
     const newData = data.map(post => ({
       ...post,
@@ -98,7 +98,7 @@ export const getComments = (post_key, com_key) => async (
   const selected = posts[post_key][com_key];
   try {
     const data = await fetch(
-      `http://jsonplaceholder.typicode.com/comments?postId=${selected.id}`
+      `https://jsonplaceholder.typicode.com/comments?postId=${selected.id}`
     ).then(data => data.json());
     const updated = {
       ...selected,

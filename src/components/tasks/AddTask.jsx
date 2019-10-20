@@ -1,9 +1,25 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as tasksActions from "../../actions/tasksActions";
-import { send } from "q";
-
+import Loader from "../utilities/Loader";
+import Fatal from "../utilities/Fatal";
+import { Redirect } from "react-router-dom";
 class AddTask extends Component {
+  componentDidMount() {
+    const {
+      match: {
+        params: { userId, taskId }
+      },
+      tasks,
+      updateValue
+    } = this.props;
+    if (userId && taskId) {
+      const task = tasks[userId][taskId];
+      console.log(task);
+      updateValue("userId", task.userId);
+      updateValue("title", task.title);
+    }
+  }
   inputHandler = event => {
     const { name, value } = event.target;
     this.props.updateValue(name, value);
@@ -17,9 +33,41 @@ class AddTask extends Component {
     };
     createTask(newTask);
   };
+  editTask = () => {
+    const {
+      match: {
+        params: { userId, taskId }
+      },
+      tasks,
+      title,
+      add,
+      editTask
+    } = this.props;
+
+    // editTask();
+  };
+  disabled = () => {
+    const { loading, userId, title } = this.props;
+
+    if (loading) {
+      return true;
+    } else if (userId && title) {
+      return false;
+    }
+    return true;
+  };
+  showAction = () => {
+    const { loading, error } = this.props;
+    if (loading) {
+      return <Loader color={"#000"} />;
+    } else if (error) {
+      return <Fatal error={"Error, intente mas tarde"} />;
+    }
+  };
   render() {
     return (
       <div>
+        {this.props.goBack ? <Redirect to={"/tareas"} /> : ""}
         <h1>Añadir tarea</h1>
         <div>
           <label htmlFor="">Usuario id: </label>
@@ -34,13 +82,20 @@ class AddTask extends Component {
         <br />
         <div>
           <label htmlFor="">Título: </label>
-          <input value={this.props.title} type="text" name="title" id="title" />
+          <input
+            value={this.props.title}
+            onChange={this.inputHandler}
+            type="text"
+            name="title"
+            id="title"
+          />
         </div>
         <br />
 
-        <button type="submit" onClick={this.props.addTask}>
+        <button type="submit" onClick={this.addTask} disabled={this.disabled()}>
           Crear
         </button>
+        {this.showAction()}
       </div>
     );
   }

@@ -2,7 +2,9 @@ import {
   GET_TASKS,
   TASKS_LOADING,
   TASKS_ERROR,
-  UPDATE_VALUE
+  UPDATE_VALUE,
+  TASK_ADDED,
+  TASK_ADDED_ERROR
 } from "../types/tasksTypes";
 export const getTasks = () => async dispatch => {
   dispatch({
@@ -44,10 +46,26 @@ export const updateValue = (name, value) => dispatch => {
     payload: data
   });
 };
-export const createTask = task => dispatch => {
-  console.log(task);
-  // dispatch({
-  //   type: UPDATE_VALUE,
-  //   payload: task
-  // });
+export const createTask = task => async dispatch => {
+  dispatch({
+    type: TASKS_LOADING
+  });
+  try {
+    await fetch("https://jsonplaceholder.typicode.com/todos", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify(task)
+    }).then(response => response.json());
+    dispatch({
+      type: TASK_ADDED
+    });
+  } catch (error) {
+    dispatch({
+      type: TASK_ADDED_ERROR,
+      payload: error.message
+    });
+  }
 };

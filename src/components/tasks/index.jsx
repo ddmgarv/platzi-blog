@@ -6,7 +6,9 @@ import Loader from "../utilities/Loader";
 import { Link } from "react-router-dom";
 class Tasks extends Component {
   componentDidMount() {
-    this.props.getTasks();
+    if (!Object.keys(this.props.tasks).length) {
+      this.props.getTasks();
+    }
   }
   showContent = () => {
     const { error, loading, tasks } = this.props;
@@ -32,6 +34,12 @@ class Tasks extends Component {
       <div key={taskId}>
         <input type="checkbox" defaultChecked={user_tasks[taskId].completed} />
         {user_tasks[taskId].title}
+        <button className="m_left">
+          <Link to={`/tareas/añadir-tarea/${userId}/${taskId}`}>Editar</Link>
+        </button>
+        <button className="m_left">
+          <Link to="">Eliminar</Link>
+        </button>
       </div>
     ));
   };

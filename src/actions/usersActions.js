@@ -7,6 +7,7 @@ export const getUsers = () => async dispatch => {
     const data = await fetch("https://jsonplaceholder.typicode.com/users").then(
       data => data.json()
     );
+    console.log(data);
     dispatch({
       type: GET_USERS,
       payload: data
